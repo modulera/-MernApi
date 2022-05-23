@@ -4,8 +4,8 @@
  ### Features ###
 - M : Mysql (sequelize orm)
 - E : Express
-- R : ReactJs
-- N : NodeJs 
+- R : React
+- N : Node
 
 
  ### Setup ###
