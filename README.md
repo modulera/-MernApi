@@ -10,4 +10,4 @@
 
  ### Setup ###
 - npm i
-- npm run << dev || build && start >>
+- npm run < dev || build & start >
