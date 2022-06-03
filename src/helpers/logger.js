@@ -44,7 +44,7 @@ const createLogger = (path, logStatus, message, writeConsole = true, writeLog = 
         return winston.createLogger({
             transports: [
                 new (winston.transports.DailyRotateFile)({
-                    filename: `./logs/${path}/${logStatus}-%DATE%-.log`,
+                    filename: `./logs/${path}/${logStatus}-%DATE%.log`,
                     datePattern: 'YYYYMMDD',
                     zippedArchive: true,
                     maxSize: '20m',

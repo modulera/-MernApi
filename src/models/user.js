@@ -47,11 +47,19 @@ const modelSchema = {
         values: ["user", "admin"],
         defaultValue: 'user',
     },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: {
+            args: true,
+            msg: 'The phone is already in use!'
+        },
+    },
 }
 
 const modelConfig = {
     sequelize: connection,
-    modelName: 'test_user',
+    modelName: 'users',
     hooks: {
         beforeCreate: async (user) => {
             if (user.password) {

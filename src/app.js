@@ -1,6 +1,4 @@
-import dotenv from 'dotenv'
-dotenv.config({ path: `.env.${process.env.NODE_ENV.trim() || 'dev'}` })
-
+import { APP_CONF } from './clients/consts';
 import logger from './helpers/logger.js';
 // logger.info({ path: `.env.${process.env.NODE_ENV.trim() || 'dev'}` })
 
@@ -13,7 +11,7 @@ import limiter from './rate-limiter';
 import routes from './routes';
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = APP_CONF['PORT'] || 8080;
 
 const whiteList = ['localhost:3000', '127.0.0.1:3000', '172.17.160.1:3000', '192.168.1.254:8080']
 // if (process.env.NODE_ENV.trim() == 'dev') {
