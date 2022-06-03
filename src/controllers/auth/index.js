@@ -1,5 +1,6 @@
 import Boom from "boom";
 import { User } from "../../models";
+import { wait } from "../../helpers";
 
 // helpers
 import {
@@ -16,11 +17,11 @@ const Register = async (req, res, next) => {
 	const input = req.body;
 	console.log(input);
 
-	const { error } = ValidationSchema.validate(input);
+	// const { error } = ValidationSchema.validate(input);
 
-	if (error) {
-		return next(Boom.badRequest(error.details[0].message));
-	}
+	// if (error) {
+	// 	return next(Boom.badRequest(error.details[0].message));
+	// }
 
 	try {
 		const isExists = await User.findOne({
@@ -154,6 +155,8 @@ const Me = async (req, res, next) => {
 		if (!user) {
 			throw Boom.unauthorized("user not fount");
 		}
+
+		await wait(3000)
 
 		res.json(user);
 	} catch (e) {

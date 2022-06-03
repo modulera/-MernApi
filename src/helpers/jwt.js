@@ -1,3 +1,5 @@
+import { APP_CONF } from '../clients/consts';
+
 import JWT from "jsonwebtoken";
 import Boom from "boom";
 
@@ -14,7 +16,7 @@ const signAccessToken = (data) => {
 			issuer: "ecommerce.app",
 		};
 
-		JWT.sign(payload, process.env.JWT_SECRET, options, (err, token) => {
+		JWT.sign(payload, APP_CONF['JWT_SECRET'], options, (err, token) => {
 			if (err) {
 				console.log(err);
 				reject(Boom.internal());
@@ -31,7 +33,7 @@ const verifyAccessToken = (req, res, next) => {
 		next(Boom.unauthorized());
 	}
 
-	JWT.verify(authorizationToken, process.env.JWT_SECRET, (err, payload) => {
+	JWT.verify(authorizationToken, APP_CONF['JWT_SECRET'], (err, payload) => {
 		if (err) {
 			return next(
 				Boom.unauthorized(
@@ -55,7 +57,7 @@ const signRefreshToken = (user_id) => {
 			issuer: "ecommerce.app",
 		};
 
-		JWT.sign(payload, process.env.JWT_REFRESH_SECRET, options, (err, token) => {
+		JWT.sign(payload, APP_CONF['JWT_REFRESH_SECRET'], options, (err, token) => {
 			if (err) {
 				console.log(err);
 				reject(Boom.internal());
@@ -72,7 +74,7 @@ const verifyRefreshToken = async (refresh_token) => {
 	return new Promise(async (resolve, reject) => {
 		JWT.verify(
 			refresh_token,
-			process.env.JWT_REFRESH_SECRET,
+			APP_CONF['JWT_REFRESH_SECRET'],
 			async (err, payload) => {
 				if (err) {
 					return reject(Boom.unauthorized());
