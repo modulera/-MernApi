@@ -15,7 +15,7 @@ import redis from "../../clients/redis";
 
 const Register = async (req, res, next) => {
 	const input = req.body;
-	console.log(input);
+	// console.log(input);
 
 	// const { error } = ValidationSchema.validate(input);
 
@@ -156,7 +156,7 @@ const Me = async (req, res, next) => {
 			throw Boom.unauthorized("user not fount");
 		}
 
-		await wait(3000)
+		await wait(300)
 
 		res.json(user);
 	} catch (e) {
