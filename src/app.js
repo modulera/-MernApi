@@ -48,8 +48,9 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  logger.error(err)
   if (err) {
+    console.error(err?.output || err);
+
     if (err.output) {
       return res.status(err.output.statusCode || 500).json(err.output.payload);
     }
