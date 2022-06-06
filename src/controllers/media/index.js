@@ -1,7 +1,10 @@
-// import { User } from "../../models";
 import Boom from "boom";
+import { wait } from "../../helpers";
 
-// validate uploaded files
+import { User, Media } from "../../models";
+// User.hasOne(Media, { as: "user" });
+
+// validate uploaded images
 const FILE_TYPE_MAP = {
 	"image/gif": "gif",
 	"image/png": "png",
@@ -15,13 +18,13 @@ const imageStorage = multer.diskStorage({
 		cb(null, 'uploads/')
 	},
 	filename: function (req, file, cb) {
-		console.log(file)
+		// console.log(file)
 		const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
 		cb(null, file.fieldname + '__' + uniqueSuffix + `.${FILE_TYPE_MAP[file.mimetype]}`)
 	},
 });
 
-const imageUpload = multer({
+const fileUpload = multer({
 	storage: imageStorage,
 	limits: {
 		fileSize: 10000000 // 10000000 Bytes = 10 MB
@@ -32,7 +35,7 @@ const imageUpload = multer({
 		}
 		cb(undefined, true);
 	}
-}).fields([{ name: 'files', maxCount: 12 }]);
+}).fields([{ name: 'images', maxCount: 12 }]);
 
 const loadFiles = (req, res) => new Promise((resolve, reject) => {
 	const response = {
@@ -40,7 +43,7 @@ const loadFiles = (req, res) => new Promise((resolve, reject) => {
 		description: null,
 	}
 
-	imageUpload(req, res, (error) => {
+	fileUpload(req, res, (error) => {
 		if (error) {
 			return reject({
 				...response,
@@ -54,14 +57,32 @@ const loadFiles = (req, res) => new Promise((resolve, reject) => {
 		return resolve({
 			...response,
 			status: "success",
-			message: "Uploaded image(s)"
+			files: req.files.images,
 		});
 	})
 });
 
-const UploadImages = async (req, res, next) => {
+const Upload = async (req, res, next) => {
+	const payload = req.payload;
+
 	try {
 		const response = await loadFiles(req, res);
+
+		for await (const file of response.files) {
+			console.log(file);
+
+			response.description = {
+				...response.description,
+				description: await Media.create({
+					name: file?.filename,
+					path: file?.destination,
+					size: file?.size,
+					mimetype: file?.mimetype,
+					userId: payload?.user_id,
+					categoryId: null,
+				})
+			}
+		}
 
 		res.json(response);
 	} catch (e) {
@@ -69,7 +90,7 @@ const UploadImages = async (req, res, next) => {
 	}
 };
 
-const DeleteImages = async (req, res, next) => {
+const Delete = async (req, res, next) => {
 	console.log('Removed files');
 
 	res.json({
@@ -77,7 +98,34 @@ const DeleteImages = async (req, res, next) => {
 	});
 };
 
+const Index = async (req, res, next) => {
+	const payload = req.payload;
+	const response = { status: "unknown", description: null }
+
+	try {
+		response.description = await Media.findAll({
+			where: {
+				userId: payload.user_id
+			}
+		});
+
+		await wait(3000)
+
+		res.json({
+			...response,
+			status: "success",
+		});
+	} catch (err) {
+		return next({
+			...response,
+			status: "error",
+			description: err,
+		});
+	}
+};
+
 export default {
-	UploadImages,
-	DeleteImages,
+	Index,
+	Upload,
+	Delete,
 };

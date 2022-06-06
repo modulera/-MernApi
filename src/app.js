@@ -2,7 +2,7 @@ import { APP_CONF } from './clients/consts';
 import logger from './helpers/logger.js';
 // logger.info({ path: `.env.${process.env.NODE_ENV.trim() || 'dev'}` })
 
-import db, { User } from './models';
+import db from './models';
 
 import express from 'express';
 import Boom from 'boom';
@@ -39,6 +39,7 @@ app.use(cors(corsOptions))
 app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'))
 
 app.use(routes);
 
@@ -60,7 +61,8 @@ app.use((err, req, res, next) => {
 ; (async () => {
   try {
     await db.connected()
-    await User.sync()
+    await db.User.sync()
+    await db.Media.sync()
 
     app.listen(PORT, () => console.log(`${PORT} Server is up!`))
   } catch (error) {

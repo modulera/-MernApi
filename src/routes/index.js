@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 // helpers
-// import { verifyAccessToken } from '../helpers/jwt';
+import { verifyAccessToken } from '../helpers/jwt';
 
 // routes
 import auth from './auth';
@@ -12,6 +12,6 @@ const router = Router();
 router.get('/api', (req, res) => res.end('hey!'));
 
 router.use('/api/auth', auth);
-router.use('/api/media', media);
+router.use('/api/media', verifyAccessToken, media);
 
 export default router;
