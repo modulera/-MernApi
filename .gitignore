@@ -1,3 +1,8 @@
+.bak/*
+.env
+dist/
+uploads/*
+
 # Logs
 logs
 *.log

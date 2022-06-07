@@ -15,13 +15,16 @@ import redis from "../../clients/redis";
 
 const Register = async (req, res, next) => {
 	const input = req.body;
-	console.log(input);
+	// console.log(input);
 
-	// const { error } = ValidationSchema.validate(input);
+	const { error } = ValidationSchema.validate({
+		email: input.email,
+		password: input.password,
+	});
 
-	// if (error) {
-	// 	return next(Boom.badRequest(error.details[0].message));
-	// }
+	if (error) {
+		return next(Boom.badRequest(error.details[0].message));
+	}
 
 	try {
 		const isExists = await User.findOne({
@@ -61,6 +64,7 @@ const Register = async (req, res, next) => {
 			refreshToken,
 		});
 	} catch (e) {
+		console.error('eeeee', e);
 		next(e);
 	}
 };
@@ -156,7 +160,7 @@ const Me = async (req, res, next) => {
 			throw Boom.unauthorized("user not fount");
 		}
 
-		await wait(3000)
+		await wait(300)
 
 		res.json(user);
 	} catch (e) {

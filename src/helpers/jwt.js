@@ -13,12 +13,12 @@ const signAccessToken = (data) => {
 
 		const options = {
 			expiresIn: "10d",
-			issuer: "ecommerce.app",
+			issuer: "myreact.app",
 		};
 
 		JWT.sign(payload, APP_CONF['JWT_SECRET'], options, (err, token) => {
 			if (err) {
-				console.log(err);
+				// console.log(err);
 				reject(Boom.internal());
 			}
 
@@ -54,12 +54,12 @@ const signRefreshToken = (user_id) => {
 		};
 		const options = {
 			expiresIn: "180d",
-			issuer: "ecommerce.app",
+			issuer: "myreact.app",
 		};
 
 		JWT.sign(payload, APP_CONF['JWT_REFRESH_SECRET'], options, (err, token) => {
 			if (err) {
-				console.log(err);
+				// console.log(err);
 				reject(Boom.internal());
 			}
 

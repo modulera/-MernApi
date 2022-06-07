@@ -1,11 +1,10 @@
 import express from 'express';
 const router = express.Router();
 
-// import Boom from "boom";
-
 import media from '../controllers/media';
 
-router.post('/upload', media.UploadImages);
-router.delete('/upload', media.DeleteImages);
+router.get('/upload', media.Index);
+router.post('/upload', media.Upload);
+router.delete('/upload', media.Delete);
 
 export default router;
