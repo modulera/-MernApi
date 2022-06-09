@@ -13,7 +13,7 @@ import routes from './routes';
 const app = express();
 const PORT = APP_CONF['PORT'] || 8080;
 
-const whiteList = ['localhost:3000', '127.0.0.1:3000', '172.17.160.1:3000', '192.168.1.254:8080']
+const whiteList = ['localhost:3000', 'localhost:3001']
 // if (process.env.NODE_ENV.trim() == 'dev') {
 //   whiteList.push('chrome-extension://coohjcphdfgbiolnekdpbcijmhambjff');
 // }

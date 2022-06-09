@@ -28,7 +28,7 @@ const Index = async (req, res, next) => {
 	try {
 		response.description = await User.findAll(qparams);
 
-		// await wait(3000)
+		await wait(3000)
 
 		res.json({
 			...response,
