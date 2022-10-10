@@ -1,6 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: `.env.${process.env.NODE_ENV?.trim() || 'dev'}` });
-
 const NODE_ENV = process.env.NODE_ENV;
 
 const APP_CONF = {

@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev' });
+
 import { APP_CONF } from './clients/consts';
 import logger from './helpers/logger.js';
-// logger.info({ path: `.env.${process.env.NODE_ENV.trim() || 'dev'}` })
 
 import db from './models';
 
@@ -14,7 +16,7 @@ const app = express();
 const PORT = APP_CONF['PORT'] || 8080;
 
 const whiteList = ['localhost:3000', 'localhost:3001']
-// if (process.env.NODE_ENV.trim() == 'dev') {
+// if (process.env.NODE_ENV.trim() == 'development') {
 //   whiteList.push('chrome-extension://coohjcphdfgbiolnekdpbcijmhambjff');
 // }
 
